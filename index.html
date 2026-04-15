@@ -46,55 +46,110 @@ body::before {
 .planet {
   position: absolute;
   inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.planet {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* ONLY the active planet is visible */
+.planet.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.planet-ui {
+  opacity: 1;
+  z-index: 2;
+}
+
+.planet-ui {
+  opacity: 1;
+}
+
+/* BOTH animations run SAME time */
+.planet.enter-next .planet-visual {
+  animation: orbitInNext 1.2s cubic-bezier(.65,0,.2,1) forwards;
+}
+
+.planet.exit-next .planet-visual {
+  animation: orbitOutNext 1.2s cubic-bezier(.65,0,.2,1) forwards;
+}
+
+.planet.enter-prev .planet-visual {
+  animation: orbitInPrev 1.2s cubic-bezier(.65,0,.2,1) forwards;
+}
+
+.planet.exit-prev .planet-visual {
+  animation: orbitOutPrev 1.2s cubic-bezier(.65,0,.2,1) forwards;
+}
+
+/* NEXT (left → center, center → right) */
+
+@keyframes orbitInNext {
+  0%   { transform: translate(-80vw, 60vh) scale(0.6); opacity: 0; }
+  25%  { transform: translate(-40vw, 10vh) scale(0.9); opacity: 1; }
+  50%  { transform: translate(-10vw, -20vh) scale(1.05); }
+  75%  { transform: translate(-3vw, -5vh) scale(1.02); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes orbitOutNext {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  25%  { transform: translate(3vw, -5vh) scale(1.02); }
+  50%  { transform: translate(10vw, -20vh) scale(1.05); }
+  75%  { transform: translate(40vw, 10vh) scale(0.9); }
+  100% { transform: translate(80vw, 60vh) scale(0.6); opacity: 0; }
+}
+
+@keyframes orbitInPrev {
+  0%   { transform: translate(80vw, 60vh) scale(0.6); opacity: 0; }
+  25%  { transform: translate(40vw, 10vh) scale(0.9); opacity: 1; }
+  50%  { transform: translate(10vw, -20vh) scale(1.05); }
+  75%  { transform: translate(3vw, -5vh) scale(1.02); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes orbitOutPrev {
+  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+  25%  { transform: translate(-3vw, -5vh) scale(1.02); }
+  50%  { transform: translate(-10vw, -20vh) scale(1.05); }
+  75%  { transform: translate(-40vw, 10vh) scale(0.9); }
+  100% { transform: translate(-80vw, 60vh) scale(0.6); opacity: 0; }
+}
+
+.planet-ui {
+  position: relative;
+  z-index: 2;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   text-align: center;
-
-  opacity: 0;
-  transform: translateY(60px) scale(1.05);
-  transition: 0.8s cubic-bezier(.2,.8,.2,1);
-
-  padding: 40px;
 }
 
-.planet {
+.planet-visual {
   position: absolute;
   inset: 0;
 
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
 
-  opacity: 0;
-  transform: translate(-40vw, 40vh) scale(0.8);
-  transition: none;
+  z-index: 1;
 }
 
-/* ACTIVE = fly in curved motion */
-.planet.active {
-  animation: enterCurve 0.9s cubic-bezier(.2,.8,.2,1) forwards;
-}
-
-@keyframes enterCurve {
-  0% {
-    opacity: 0;
-    transform: translate(-40vw, 40vh) scale(0.8);
-  }
-
-  60% {
-    opacity: 1;
-    transform: translate(10px, -10px) scale(1.02);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
+.planet-visual {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .planet img {
@@ -104,7 +159,6 @@ body::before {
   margin-bottom: 20px;
 
   filter: drop-shadow(0 0 25px rgba(255,255,255,0.4));
-  animation: float 4s ease-in-out infinite;
 }
 
 /* glow stronger per planet */
@@ -178,59 +232,105 @@ button:hover {
 <!--planets-->
 
 <div class="planet active mercury">
+  <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/18_mercury_new.png">
+  </div>
+  <div class="planet-ui">
     <h1>Mercury</h1>
-    <p>You would survive only seconds before your body overheats and begins breaking down from direct solar radiation.  
-With no atmosphere, there is nothing to slow heat or shield radiation, so your cells fail almost instantly.</p>
+    <p>
+      You would survive only seconds before your body overheats and begins breaking down from direct solar radiation.<br>
+      With no atmosphere, there is nothing to slow heat or shield radiation, so your cells fail almost instantly.
+    </p>
   </div>
+</div>
 
-  <div class="planet venus">
+<div class="planet venus">
+  <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/27_venus_jg.png">
+  </div>
+  <div class="planet-ui">
     <h1>Venus</h1>
-    <p>You would be crushed and burned almost immediately by extreme atmospheric pressure and surface heat hot enough to melt lead.  
-The dense CO₂ atmosphere creates a runaway greenhouse effect, making survival physically impossible.</p>
+    <p>
+      You would be crushed and burned almost immediately by extreme atmospheric pressure and surface heat hot enough to melt lead.<br>
+      The dense CO₂ atmosphere creates a runaway greenhouse effect, making survival physically impossible.
+    </p>
   </div>
+</div>
 
-  <div class="planet earth">
+<div class="planet earth">
+  <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/17_earth.png">
+  </div>
+  <div class="planet-ui">
     <h1>Earth</h1>
-    <p>You live here, unless you're an alien 👽 *or astronaut*</p>
+    <p>You live here, unless you're an alien 👽 (*or an astronaut*).</p>
   </div>
+</div>
 
-  <div class="planet mars">
+<div class="planet mars">
+  <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/19_mars.png">
+  </div>
+  <div class="planet-ui">
     <h1>Mars</h1>
-    <p>You would lose consciousness within minutes due to lack of oxygen, followed by cellular damage from radiation exposure.  
-Mars has a thin atmosphere that cannot support breathing or block cosmic radiation, making long-term survival impossible without protection.</p>
+    <p>
+      You would lose consciousness within minutes due to lack of oxygen, followed by cellular damage from radiation exposure.<br>
+      Mars has a thin atmosphere that cannot support breathing or block cosmic radiation, making long-term survival impossible without protection.
+    </p>
   </div>
+</div>
 
-  <div class="planet jupiter">
+<div class="planet jupiter">
+  <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/16_jupiter_new.png">
+  </div>
+  <div class="planet-ui">
     <h1>Jupiter</h1>
-    <p>You would be destroyed almost instantly as you descend into increasing gas pressure with no solid surface to stand on.  
-The atmosphere becomes denser until it crushes anything descending through it.</p>
+    <p>
+      You would be destroyed almost instantly as you descend into increasing gas pressure with no solid surface to stand on.<br>
+      The atmosphere becomes denser until it crushes anything descending through it.
+    </p>
   </div>
+</div>
 
-  <div class="planet saturn">
+<div class="planet saturn">
+  <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/28_saturn.png">
+  </div>
+  <div class="planet-ui">
     <h1>Saturn</h1>
-    <p>Similar to Jupiter, you would be rapidly compressed and destroyed by atmospheric pressure long before reaching any stable layer.  
-Its hydrogen-helium atmosphere provides no solid ground.</p>
+    <p>
+      Similar to Jupiter, you would be rapidly compressed and destroyed by atmospheric pressure long before reaching any stable layer.<br>
+      Its hydrogen-helium atmosphere provides no solid ground.
+    </p>
   </div>
+</div>
 
-  <div class="planet uranus">
+<div class="planet uranus">
+  <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/29_uranus.png">
+  </div>
+  <div class="planet-ui">
     <h1>Uranus</h1>
-    <p>Extreme cold and atmospheric conditions would quickly cause complete loss of body function and structural failure of cells.  
-Temperatures drop so low that biological processes cannot continue.</p>
+    <p>
+      Extreme cold and atmospheric conditions would quickly cause complete loss of body function and structural failure of cells.<br>
+      Temperatures drop so low that biological processes cannot continue.
+    </p>
   </div>
+</div>
 
-  <div class="planet neptune">
+<div class="planet neptune">
+  <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/30_neptune.png">
-    <h1>Neptune</h1>
-    <p>You would be exposed to supersonic winds and freezing temperatures that destroy any exposed system almost instantly.  
-The atmosphere is highly unstable with extreme storm systems.</p>
   </div>
+  <div class="planet-ui">
+    <h1>Neptune</h1>
+    <p>
+      You would be exposed to supersonic winds and freezing temperatures that destroy any exposed system almost instantly.<br>
+      The atmosphere is highly unstable with extreme storm systems.
+    </p>
+  </div>
+</div>
 
     <!--Navigation-->
     <div class="nav">
@@ -241,55 +341,93 @@ The atmosphere is highly unstable with extreme storm systems.</p>
 </div>
 
 <script>
-const planets = document.querySelectorAll(".planet");
+const planets = Array.from(document.querySelectorAll(".planet"));
+
 let index = 0;
-let scrolling = false;
+let busy = false;
 
-function show(i) {
-  planets.forEach(p => p.classList.remove("active"));
+function setActive(i) {
+  planets.forEach((p, idx) => {
+    p.classList.toggle("active", idx === i);
+  });
+}
 
-  const el = planets[i];
+setActive(index);
 
-  // reset animation so it replays every time
-  el.classList.remove("active");
-  void el.offsetWidth; // force reflow
+function switchPlanet(nextIndex, direction) {
+  if (busy || nextIndex === index) return;
+  busy = true;
 
-  el.classList.add("active");
+  const current = planets[index];
+  const next = planets[nextIndex];
+
+  // ensure next is visible BEFORE animation starts
+  next.classList.add("active");
+
+  // reset animation classes cleanly
+  planets.forEach(p => {
+    p.classList.remove(
+      "enter-next",
+      "exit-next",
+      "enter-prev",
+      "exit-prev"
+    );
+  });
+
+  // force reflow so animation always triggers correctly
+  void current.offsetWidth;
+
+  // apply animations
+  if (direction === "next") {
+    current.classList.add("exit-next");
+    next.classList.add("enter-next");
+  } else {
+    current.classList.add("exit-prev");
+    next.classList.add("enter-prev");
+  }
+
+  // after animation finishes
+  setTimeout(() => {
+    current.classList.remove("active");
+
+    current.classList.remove(
+      "exit-next",
+      "exit-prev"
+    );
+
+    next.classList.remove(
+      "enter-next",
+      "enter-prev"
+    );
+
+    index = nextIndex;
+    busy = false;
+  }, 1200);
 }
 
 function next() {
-  index = (index + 1) % planets.length;
-  show(index);
+  switchPlanet((index + 1) % planets.length, "next");
 }
 
 function prev() {
-  index = (index - 1 + planets.length) % planets.length;
-  show(index);
+  switchPlanet((index - 1 + planets.length) % planets.length, "prev");
 }
 
-document.addEventListener("mousemove", (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 20;
-  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+window.next = next;
+window.prev = prev;
 
-  document.body.style.backgroundPosition =
-    `${50 + x}% ${50 + y}%`;
-});
+// scroll control (stable debounce)
+let scrollLock = false;
 
-/* SCROLL CONTROL */
 window.addEventListener("wheel", (e) => {
-  if (scrolling) return;
+  if (scrollLock) return;
+  scrollLock = true;
 
-  scrolling = true;
-
-  if (e.deltaY > 0) {
-    next();
-  } else {
-    prev();
-  }
+  if (e.deltaY > 0) next();
+  else prev();
 
   setTimeout(() => {
-    scrolling = false;
-  }, 700); // matches animation duration
+    scrollLock = false;
+  }, 400);
 });
 </script>
-    
