@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>How Long Would You Survive?</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  color: white;
+  overflow: hidden;
+
+  background: url("https://img.freepik.com/free-vector/bring-night-space-wallpaper-with-glowing-starfield_1017-53512.jpg") no-repeat center center fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* STAR BACKGROUND */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(white 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* APP */
+#app {
+  height: 100vh;
+  position: relative;
+}
+
+/* PLANETS */
+.planet {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  opacity: 0;
+  transform: translateY(60px) scale(1.05);
+  transition: 0.8s cubic-bezier(.2,.8,.2,1);
+
+  padding: 40px;
+}
+
+.planet {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  opacity: 0;
+  transform: translate(-40vw, 40vh) scale(0.8);
+  transition: none;
+}
+
+/* ACTIVE = fly in curved motion */
+.planet.active {
+  animation: enterCurve 0.9s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+@keyframes enterCurve {
+  0% {
+    opacity: 0;
+    transform: translate(-40vw, 40vh) scale(0.8);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate(10px, -10px) scale(1.02);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.planet img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  margin-bottom: 20px;
+
+  filter: drop-shadow(0 0 25px rgba(255,255,255,0.4));
+  animation: float 4s ease-in-out infinite;
+}
+
+/* glow stronger per planet */
+.mercury img { filter: drop-shadow(0 0 20px #aaa); }
+.venus img   { filter: drop-shadow(0 0 25px #ffb84d); }
+.earth img   { filter: drop-shadow(0 0 30px #4da6ff); }
+.mars img    { filter: drop-shadow(0 0 25px #ff4d4d); }
+.jupiter img { filter: drop-shadow(0 0 30px #d2b48c); }
+.saturn img  { filter: drop-shadow(0 0 30px #e6c98a); }
+.uranus img  { filter: drop-shadow(0 0 30px #66ffff); }
+.neptune img { filter: drop-shadow(0 0 30px #4d4dff); }
+
+/* floating */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* TEXT */
+h1 {
+  font-size: 70px;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+p {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.details {
+  margin-top: 20px;
+}
+
+.detail {
+  margin: 8px 0;
+  font-size: 20px;
+}
+
+/* NAV */
+.nav {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+}
+
+button {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 14px;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: white;
+  color: black;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+<!--planets-->
+
+<div class="planet active mercury">
+    <img src="https://solarsystem.nasa.gov/system/feature_items/images/18_mercury_new.png">
+    <h1>Mercury</h1>
+    <p>You would survive only seconds before your body overheats and begins breaking down from direct solar radiation.  
+With no atmosphere, there is nothing to slow heat or shield radiation, so your cells fail almost instantly.</p>
+  </div>
+
+  <div class="planet venus">
+    <img src="https://solarsystem.nasa.gov/system/feature_items/images/27_venus_jg.png">
+    <h1>Venus</h1>
+    <p>You would be crushed and burned almost immediately by extreme atmospheric pressure and surface heat hot enough to melt lead.  
+The dense CO₂ atmosphere creates a runaway greenhouse effect, making survival physically impossible.</p>
+  </div>
+
+  <div class="planet earth">
+    <img src="https://solarsystem.nasa.gov/system/feature_items/images/17_earth.png">
+    <h1>Earth</h1>
+    <p>You live here, unless you're an alien 👽 *or astronaut*</p>
+  </div>
+
+  <div class="planet mars">
+    <img src="https://solarsystem.nasa.gov/system/feature_items/images/19_mars.png">
+    <h1>Mars</h1>
+    <p>You would lose consciousness within minutes due to lack of oxygen, followed by cellular damage from radiation exposure.  
+Mars has a thin atmosphere that cannot support breathing or block cosmic radiation, making long-term survival impossible without protection.</p>
+  </div>
+
+  <div class="planet jupiter">
+    <img src="https://solarsystem.nasa.gov/system/feature_items/images/16_jupiter_new.png">
+    <h1>Jupiter</h1>
+    <p>You would be destroyed almost instantly as you descend into increasing gas pressure with no solid surface to stand on.  
+The atmosphere becomes denser until it crushes anything descending through it.</p>
+  </div>
+
+  <div class="planet saturn">
+    <img src="https://solarsystem.nasa.gov/system/feature_items/images/28_saturn.png">
+    <h1>Saturn</h1>
+    <p>Similar to Jupiter, you would be rapidly compressed and destroyed by atmospheric pressure long before reaching any stable layer.  
+Its hydrogen-helium atmosphere provides no solid ground.</p>
+  </div>
+
+  <div class="planet uranus">
+    <img src="https://solarsystem.nasa.gov/system/feature_items/images/29_uranus.png">
+    <h1>Uranus</h1>
+    <p>Extreme cold and atmospheric conditions would quickly cause complete loss of body function and structural failure of cells.  
+Temperatures drop so low that biological processes cannot continue.</p>
+  </div>
+
+  <div class="planet neptune">
+    <img src="https://solarsystem.nasa.gov/system/feature_items/images/30_neptune.png">
+    <h1>Neptune</h1>
+    <p>You would be exposed to supersonic winds and freezing temperatures that destroy any exposed system almost instantly.  
+The atmosphere is highly unstable with extreme storm systems.</p>
+  </div>
+
+    <!--Navigation-->
+    <div class="nav">
+        <button onclick="prev()">←</button>
+        <button onclick="next()">→</button>
+  </div>
+
+</div>
+
+<script>
+const planets = document.querySelectorAll(".planet");
+let index = 0;
+let scrolling = false;
+
+function show(i) {
+  planets.forEach(p => p.classList.remove("active"));
+
+  const el = planets[i];
+
+  // reset animation so it replays every time
+  el.classList.remove("active");
+  void el.offsetWidth; // force reflow
+
+  el.classList.add("active");
+}
+
+function next() {
+  index = (index + 1) % planets.length;
+  show(index);
+}
+
+function prev() {
+  index = (index - 1 + planets.length) % planets.length;
+  show(index);
+}
+
+document.addEventListener("mousemove", (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+  document.body.style.backgroundPosition =
+    `${50 + x}% ${50 + y}%`;
+});
+
+/* SCROLL CONTROL */
+window.addEventListener("wheel", (e) => {
+  if (scrolling) return;
+
+  scrolling = true;
+
+  if (e.deltaY > 0) {
+    next();
+  } else {
+    prev();
+  }
+
+  setTimeout(() => {
+    scrolling = false;
+  }, 700); // matches animation duration
+});
+</script>
+    
