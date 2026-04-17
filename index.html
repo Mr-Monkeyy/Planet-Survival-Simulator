@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>How Long Would You Survive?</title>
-
+ 
 <style>
 body {
   margin: 0;
   font-family: sans-serif;
   color: white;
   overflow: hidden;
-
+ 
   background: url("https://img.freepik.com/free-vector/bring-night-space-wallpaper-with-glowing-starfield_1017-53512.jpg") no-repeat center center fixed;
   background-size: cover;
   background-position: center;
@@ -24,8 +24,7 @@ body::after {
   background: transparent;
   pointer-events: none;
 }
-
-/* STAR BACKGROUND */
+ 
 body::before {
   content: "";
   position: fixed;
@@ -35,133 +34,85 @@ body::before {
   opacity: 0.15;
   pointer-events: none;
 }
-
-/* APP */
+ 
 #app {
   height: 100vh;
   position: relative;
 }
-
-/* PLANETS */
+ 
 .planet {
   position: absolute;
   inset: 0;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.planet {
   will-change: transform, opacity;
   transform: translateZ(0);
 }
-
-/* ONLY the active planet is visible */
+ 
 .planet.active {
   opacity: 1;
   pointer-events: auto;
 }
-
-.planet-ui {
-  opacity: 1;
-  z-index: 2;
-}
-
-.planet-ui {
-  opacity: 1;
-}
-
-/* BOTH animations run SAME time */
-.planet.enter-next .planet-visual {
-  animation: orbitInNext 1.2s cubic-bezier(.65,0,.2,1) forwards;
-}
-
-.planet.exit-next .planet-visual {
-  animation: orbitOutNext 1.2s cubic-bezier(.65,0,.2,1) forwards;
-}
-
-.planet.enter-prev .planet-visual {
-  animation: orbitInPrev 1.2s cubic-bezier(.65,0,.2,1) forwards;
-}
-
-.planet.exit-prev .planet-visual {
-  animation: orbitOutPrev 1.2s cubic-bezier(.65,0,.2,1) forwards;
-}
-
-/* NEXT (left → center, center → right) */
-
+ 
+/* animate the whole planet so text + image move together */
+.planet.enter-next { animation: orbitInNext  1.2s cubic-bezier(.65,0,.2,1) forwards; }
+.planet.exit-next  { animation: orbitOutNext 1.2s cubic-bezier(.65,0,.2,1) forwards; }
+.planet.enter-prev { animation: orbitInPrev  1.2s cubic-bezier(.65,0,.2,1) forwards; }
+.planet.exit-prev  { animation: orbitOutPrev 1.2s cubic-bezier(.65,0,.2,1) forwards; }
+ 
+/* no opacity in keyframes — opacity handled by .active class */
 @keyframes orbitInNext {
-  0%   { transform: translate(-80vw, 60vh) scale(0.6); opacity: 0; }
-  25%  { transform: translate(-40vw, 10vh) scale(0.9); opacity: 1; }
-  50%  { transform: translate(-10vw, -20vh) scale(1.05); }
-  75%  { transform: translate(-3vw, -5vh) scale(1.02); }
+  0%   { transform: translate(-55vw, 65vh) scale(0.45); }
+  60%  { transform: translate(-18vw, 18vh) scale(0.85); }
   100% { transform: translate(0, 0) scale(1); }
 }
-
+ 
 @keyframes orbitOutNext {
-  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
-  25%  { transform: translate(3vw, -5vh) scale(1.02); }
-  50%  { transform: translate(10vw, -20vh) scale(1.05); }
-  75%  { transform: translate(40vw, 10vh) scale(0.9); }
-  100% { transform: translate(80vw, 60vh) scale(0.6); opacity: 0; }
+  0%   { transform: translate(0, 0) scale(1); }
+  40%  { transform: translate(18vw, 18vh) scale(0.85); }
+  100% { transform: translate(55vw, 65vh) scale(0.45); }
 }
-
+ 
 @keyframes orbitInPrev {
-  0%   { transform: translate(80vw, 60vh) scale(0.6); opacity: 0; }
-  25%  { transform: translate(40vw, 10vh) scale(0.9); opacity: 1; }
-  50%  { transform: translate(10vw, -20vh) scale(1.05); }
-  75%  { transform: translate(3vw, -5vh) scale(1.02); }
+  0%   { transform: translate(55vw, 65vh) scale(0.45); }
+  60%  { transform: translate(18vw, 18vh) scale(0.85); }
   100% { transform: translate(0, 0) scale(1); }
 }
-
+ 
 @keyframes orbitOutPrev {
-  0%   { transform: translate(0, 0) scale(1); opacity: 1; }
-  25%  { transform: translate(-3vw, -5vh) scale(1.02); }
-  50%  { transform: translate(-10vw, -20vh) scale(1.05); }
-  75%  { transform: translate(-40vw, 10vh) scale(0.9); }
-  100% { transform: translate(-80vw, 60vh) scale(0.6); opacity: 0; }
+  0%   { transform: translate(0, 0) scale(1); }
+  40%  { transform: translate(-18vw, 18vh) scale(0.85); }
+  100% { transform: translate(-55vw, 65vh) scale(0.45); }
 }
-
-.planet-ui {
-  position: relative;
-  z-index: 2;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-}
-
+ 
 .planet-visual {
   position: absolute;
-  inset: 0;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 1;
-}
-
-.planet-visual {
-  position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 }
-
+ 
+.planet-ui {
+  position: absolute;
+  bottom: 100px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  text-align: center;
+  padding: 0 40px;
+}
+ 
 .planet img {
   width: 220px;
   height: 220px;
   object-fit: contain;
-  margin-bottom: 20px;
-
   filter: drop-shadow(0 0 25px rgba(255,255,255,0.4));
 }
-
-/* glow stronger per planet */
+ 
 .mercury img { filter: drop-shadow(0 0 20px #aaa); }
 .venus img   { filter: drop-shadow(0 0 25px #ffb84d); }
 .earth img   { filter: drop-shadow(0 0 30px #4da6ff); }
@@ -170,35 +121,36 @@ body::before {
 .saturn img  { filter: drop-shadow(0 0 30px #e6c98a); }
 .uranus img  { filter: drop-shadow(0 0 30px #66ffff); }
 .neptune img { filter: drop-shadow(0 0 30px #4d4dff); }
-
-/* floating */
+ 
 @keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,100% { transform: translate(-50%, -50%); }
+  50%      { transform: translate(-50%, calc(-50% - 10px)); }
 }
-
-/* TEXT */
+ 
+.planet.active .planet-visual {
+  animation: float 4s ease-in-out infinite;
+}
+ 
 h1 {
   font-size: 70px;
   margin: 0;
   text-shadow: 0 0 20px rgba(255,255,255,0.2);
 }
-
+ 
 p {
   font-size: 18px;
   opacity: 0.8;
 }
-
+ 
 .details {
   margin-top: 20px;
 }
-
+ 
 .detail {
   margin: 8px 0;
   font-size: 20px;
 }
-
-/* NAV */
+ 
 .nav {
   position: absolute;
   bottom: 30px;
@@ -206,7 +158,7 @@ p {
   text-align: center;
   z-index: 10;
 }
-
+ 
 button {
   background: transparent;
   border: 1px solid white;
@@ -216,21 +168,60 @@ button {
   cursor: pointer;
   transition: 0.2s;
 }
-
+ 
 button:hover {
   background: white;
   color: black;
 }
 
+#intro {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+}
+
+.intro-content {
+  max-width: 600px;
+  padding: 20px;
+}
+
+#intro h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+#intro p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  opacity: 0.8;
+}
+
+#intro button {
+  font-size: 16px;
+  padding: 12px 20px;
+}
+
 </style>
 </head>
-
+ 
 <body>
 
+<div id="intro">
+  <div class="intro-content">
+    <h1>Ever wondered how long you would survive on the planets in our solar system?</h1>
+    <p>Well… let’s find out.</p>
+    <p>*btw, you can also scroll to navigate*</p>
+    <button onclick="startApp()">Start</button>
+  </div>
+</div>
+ 
 <div id="app">
-
-<!--planets-->
-
+ 
 <div class="planet active mercury">
   <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/18_mercury_new.png">
@@ -243,7 +234,7 @@ button:hover {
     </p>
   </div>
 </div>
-
+ 
 <div class="planet venus">
   <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/27_venus_jg.png">
@@ -256,7 +247,7 @@ button:hover {
     </p>
   </div>
 </div>
-
+ 
 <div class="planet earth">
   <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/17_earth.png">
@@ -266,7 +257,7 @@ button:hover {
     <p>You live here, unless you're an alien 👽 (*or an astronaut*).</p>
   </div>
 </div>
-
+ 
 <div class="planet mars">
   <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/19_mars.png">
@@ -279,7 +270,7 @@ button:hover {
     </p>
   </div>
 </div>
-
+ 
 <div class="planet jupiter">
   <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/16_jupiter_new.png">
@@ -292,7 +283,7 @@ button:hover {
     </p>
   </div>
 </div>
-
+ 
 <div class="planet saturn">
   <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/28_saturn.png">
@@ -305,7 +296,7 @@ button:hover {
     </p>
   </div>
 </div>
-
+ 
 <div class="planet uranus">
   <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/29_uranus.png">
@@ -318,7 +309,7 @@ button:hover {
     </p>
   </div>
 </div>
-
+ 
 <div class="planet neptune">
   <div class="planet-visual">
     <img src="https://solarsystem.nasa.gov/system/feature_items/images/30_neptune.png">
@@ -331,53 +322,41 @@ button:hover {
     </p>
   </div>
 </div>
-
-    <!--Navigation-->
-    <div class="nav">
-        <button onclick="prev()">←</button>
-        <button onclick="next()">→</button>
+ 
+  <div class="nav">
+    <button onclick="prev()">←</button>
+    <button onclick="next()">→</button>
   </div>
-
+ 
 </div>
-
+ 
 <script>
 const planets = Array.from(document.querySelectorAll(".planet"));
-
+ 
 let index = 0;
 let busy = false;
-
+ 
 function setActive(i) {
   planets.forEach((p, idx) => {
     p.classList.toggle("active", idx === i);
   });
 }
-
+ 
 setActive(index);
-
+ 
 function switchPlanet(nextIndex, direction) {
   if (busy || nextIndex === index) return;
   busy = true;
-
+ 
   const current = planets[index];
   const next = planets[nextIndex];
-
-  // ensure next is visible BEFORE animation starts
-  next.classList.add("active");
-
-  // reset animation classes cleanly
+ 
   planets.forEach(p => {
-    p.classList.remove(
-      "enter-next",
-      "exit-next",
-      "enter-prev",
-      "exit-prev"
-    );
+    p.classList.remove("enter-next", "exit-next", "enter-prev", "exit-prev");
   });
-
-  // force reflow so animation always triggers correctly
+ 
   void current.offsetWidth;
-
-  // apply animations
+ 
   if (direction === "next") {
     current.classList.add("exit-next");
     next.classList.add("enter-next");
@@ -385,49 +364,54 @@ function switchPlanet(nextIndex, direction) {
     current.classList.add("exit-prev");
     next.classList.add("enter-prev");
   }
-
-  // after animation finishes
+ 
+  // show next immediately so it's visible during animation
+  next.style.opacity = "1";
+  next.style.pointerEvents = "none";
+ 
   setTimeout(() => {
-    current.classList.remove("active");
-
-    current.classList.remove(
-      "exit-next",
-      "exit-prev"
-    );
-
-    next.classList.remove(
-      "enter-next",
-      "enter-prev"
-    );
-
+    current.classList.remove("active", "exit-next", "exit-prev");
+    current.style.opacity = "";
+    next.classList.remove("enter-next", "enter-prev");
+    next.style.opacity = "";
+    next.style.pointerEvents = "";
+    next.classList.add("active");
     index = nextIndex;
     busy = false;
   }, 1200);
 }
-
+ 
 function next() {
   switchPlanet((index + 1) % planets.length, "next");
 }
-
+ 
 function prev() {
   switchPlanet((index - 1 + planets.length) % planets.length, "prev");
 }
-
+ 
 window.next = next;
 window.prev = prev;
-
-// scroll control (stable debounce)
+ 
 let scrollLock = false;
-
+ 
 window.addEventListener("wheel", (e) => {
   if (scrollLock) return;
   scrollLock = true;
-
   if (e.deltaY > 0) next();
   else prev();
+  setTimeout(() => { scrollLock = false; }, 400);
+});
+
+function startApp() {
+  const intro = document.getElementById("intro");
+  intro.style.opacity = "0";
+  intro.style.transition = "opacity 0.6s ease";
 
   setTimeout(() => {
-    scrollLock = false;
-  }, 400);
-});
+    intro.style.display = "none";
+  }, 600);
+}
+
 </script>
+</body>
+</html>
